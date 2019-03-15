@@ -25,6 +25,7 @@ var Version string
 func main() {
 	confPathPtr := flag.String("config", "config.yml", "set config path")
 	versionReqPtr := flag.Bool("version", false, "see version")
+	flag.Parse()
 	if *versionReqPtr {
 		fmt.Println("web-rotate " + Version)
 		os.Exit(0)
