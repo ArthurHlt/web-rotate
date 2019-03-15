@@ -5,6 +5,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"github.com/chromedp/chromedp"
 	"github.com/chromedp/chromedp/client"
 	"github.com/chromedp/chromedp/runner"
@@ -18,8 +19,15 @@ import (
 	"time"
 )
 
+var Version string
+
 func main() {
 	confPathPtr := flag.String("config", "config.yml", "set config path")
+	versionReqPtr := flag.Bool("version", false, "see version")
+	if *versionReqPtr {
+		fmt.Println("web-rotate " + Version)
+		os.Exit(0)
+	}
 	var err error
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)

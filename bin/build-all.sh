@@ -5,7 +5,7 @@ set -e
 
 BASE=$(dirname $0)
 OUTDIR=${BASE}/../out
-BINARYNAME=socks5-nameserver
+BINARYNAME=web-rotate
 CWD=$(pwd)
 version=$(echo "${TRAVIS_BRANCH:-dev}" | sed 's/^v//')
 
