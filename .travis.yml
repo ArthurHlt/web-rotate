@@ -10,7 +10,7 @@ script:
       echo "You need to run `go fmt`"
       exit 1
     fi
-  - go test ./..
+  - go test .
 after_success:
   - bin/build-all.sh
 deploy:
