@@ -13,6 +13,7 @@ script:
   - go test .
 after_success:
   - bin/build-all.sh
+  - rm out/web-rotate
 deploy:
   provider: releases
   api_key:
