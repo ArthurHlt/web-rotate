@@ -77,8 +77,6 @@ func main() {
 }
 
 func pagesToTasks(pages []*Page) chromedp.Tasks {
-	b, _ := yaml.Marshal(pages[0])
-	fmt.Println(string(b))
 	network.Enable()
 	tasks := chromedp.Tasks{
 		network.Enable(),
