@@ -61,11 +61,11 @@ func (s Style) ToCss() string {
 }
 
 type Page struct {
-	Cartridge      string            `yaml:"cartridge"`
-	Url            string            `yaml:"url"`
-	Duration       Duration          `yaml:"duration"`
-	StyleCartridge *StyleCartridge   `yaml:"style_cartridge"`
-	Headers        map[string]string `yaml:"headers"`
+	Cartridge      string                 `yaml:"cartridge"`
+	Url            string                 `yaml:"url"`
+	Duration       Duration               `yaml:"duration"`
+	StyleCartridge *StyleCartridge        `yaml:"style_cartridge,omitempty"`
+	Headers        map[string]interface{} `yaml:"headers,omitempty"`
 }
 
 func (c *Page) UnmarshalYAML(unmarshal func(interface{}) error) error {

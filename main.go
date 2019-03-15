@@ -6,6 +6,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/chromedp"
 	"github.com/chromedp/chromedp/client"
 	"github.com/chromedp/chromedp/runner"
@@ -75,19 +76,29 @@ func main() {
 }
 
 func pagesToTasks(pages []*Page) chromedp.Tasks {
-	tasks := make(chromedp.Tasks, len(pages))
-	for i, p := range pages {
-		tasks[i] = pageToTask(p)
+	network.Enable()
+	tasks := chromedp.Tasks{
+		network.Enable(),
+	}
+
+	for _, p := range pages {
+		tasks = append(tasks, pageToTask(p)...)
 	}
 	return tasks
 }
 
 func pageToTask(page *Page) chromedp.Tasks {
-	return chromedp.Tasks{
+	tasks := make(chromedp.Tasks, 0)
+	if len(page.Headers) > 0 {
+		tasks = append(tasks, network.SetExtraHTTPHeaders(page.Headers))
+	}
+	tasks = append(
+		tasks,
 		chromedp.Navigate(page.Url),
 		chromedp.ActionFunc(cartridge(page)),
 		chromedp.Sleep(time.Duration(page.Duration)),
-	}
+	)
+	return tasks
 }
 
 func retrieveConfig(configPath string) (*Config, error) {
