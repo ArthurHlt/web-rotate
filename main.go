@@ -77,6 +77,8 @@ func main() {
 }
 
 func pagesToTasks(pages []*Page) chromedp.Tasks {
+	b, _ := yaml.Marshal(pages[0])
+	fmt.Println(string(b))
 	network.Enable()
 	tasks := chromedp.Tasks{
 		network.Enable(),
@@ -93,12 +95,11 @@ func pageToTask(page *Page) chromedp.Tasks {
 	if len(page.Headers) > 0 {
 		tasks = append(tasks, network.SetExtraHTTPHeaders(page.Headers))
 	}
-	tasks = append(
-		tasks,
-		chromedp.Navigate(page.Url),
-		chromedp.ActionFunc(cartridge(page)),
-		chromedp.Sleep(time.Duration(page.Duration)),
-	)
+	tasks = append(tasks, chromedp.Navigate(page.Url))
+	if page.Cartridge != "" {
+		tasks = append(tasks, chromedp.ActionFunc(cartridge(page)))
+	}
+	tasks = append(tasks, chromedp.Sleep(time.Duration(page.Duration)))
 	return tasks
 }
 

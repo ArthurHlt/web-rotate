@@ -74,9 +74,6 @@ func (c *Page) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	if err = unmarshal((*plain)(c)); err != nil {
 		return err
 	}
-	if c.Cartridge == "" {
-		return fmt.Errorf("You must define cartridge in your page")
-	}
 	if c.Url == "" {
 		return fmt.Errorf("You must define an url in your page")
 	}
