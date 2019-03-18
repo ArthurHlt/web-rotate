@@ -9,14 +9,17 @@ import (
 
 func cartridge(page *Page) func(context.Context, cdp.Executor) error {
 	return func(ctxt context.Context, h cdp.Executor) error {
-		// set up parameters
-		p := runtime.Evaluate(fmt.Sprintf(`
+		elem := fmt.Sprintf(
+			`'<div id="chromedp-cartridge" style="%s"><span style="%s">%s</span></div>'`,
+			page.StyleCartridge.Box.ToCss(), page.StyleCartridge.Text.ToCss(), page.Cartridge,
+		)
+		js := fmt.Sprintf(`
 window.onload = function () {
-	document.body.innerHTML += '<div id="chrmodp-cartridge" style="%s">' + 
-    	 '<span style="%s">%s</span>'+
-     	'</div>';
+	document.body.innerHTML += %s;
 }
-`, page.StyleCartridge.Box.ToCss(), page.StyleCartridge.Text.ToCss(), page.Cartridge))
+document.body.innerHTML += %s;
+`, elem, elem)
+		p := runtime.Evaluate(js)
 		// evaluate
 		_, _, err := p.Do(ctxt, h)
 		if err != nil {
